@@ -1,4 +1,3 @@
-const getEvent = (command) => require(`../commands/${command}`);
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const fs = require('node:fs');
