@@ -1,10 +1,15 @@
-const Discord = require("discord.js");
+const { Client, Intents } = require("discord.js");
 require("dotenv").config();
 
 const { loadEvents } = require("./handlers/loadEvents");
 
-const client = new Discord.Client();
-client.config = require("./config.json")
+const client = new Client({
+    allowedMentions: { parse: ["users", "roles"] },
+    intents: 8
+});
+client.config = require("./config.json");
+
+loadEvents(client);
 
 client.on("ready", () => {
     console.log(`Running from ${client.user.tag}!`);
