@@ -9,9 +9,8 @@ const client = new Client({
 });
 client.config = require("./config.json");
 
-loadEvents(client);
-
 client.on("ready", () => {
+    loadEvents(client);
     console.log(`Running from ${client.user.tag}!`);
 });
 
