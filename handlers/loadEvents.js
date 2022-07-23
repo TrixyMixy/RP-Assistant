@@ -17,11 +17,11 @@ function loadEvents(client) {
             await rest.put(
                 Routes.applicationCommands("999712176203894825"),
                 { body: commands },
-            );   
+            );
         } catch (error) {
             console.error(error);
         }
-    })(); 
+    })();
 }
 
 module.exports = {
