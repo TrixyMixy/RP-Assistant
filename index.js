@@ -8,19 +8,18 @@ const client = new Client({
     allowedMentions: { parse: ["users", "roles"] },
     intents: 8
 });
-
-function onInteraction(client,interaction) {
-    const command = require(`./commands/${interaction.commandName}`);
-    command.execute(client, interaction);
-}
-
-client.on("ready", () => {
-    loadEvents(client);
+client.on("ready", async () => {
+    await loadEvents(client);
     console.log(`Running from ${client.user.tag}!`);
 });
 
-client.on("interactionCreate", (interaction) => {
-    onInteraction(client,interaction);
+client.on("interactionCreate", async (interaction) => {
+    if (interaction.isButton()){
+        console.log(interaction);
+    } else if (interaction.isChatInputCommand()) {
+        const command = require(`./commands/${interaction.commandName}`);
+        command.execute(interaction);
+    }
 });
 
 client.login(process.env.BOT_TOKEN);
