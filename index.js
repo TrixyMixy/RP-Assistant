@@ -26,9 +26,10 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isButton()) {
         switch (interaction.customId) {
             case "sender":
+                console.log(interaction);
                 let user = {
                     user: interaction.user.id,
-                    request: interaction.id
+                    request: interaction.message.id
                 }
                 dataObj.data.push(user);
                 fs.writeFileSync('./data.json', JSON.stringify(dataObj));
