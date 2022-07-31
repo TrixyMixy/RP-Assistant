@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-config = require("../config.json");
+const config = require("../config.json");
 
 module.exports = {
     data: new SlashCommandBuilder().setName('request').setDescription('Request a roleplay session.'),
@@ -21,7 +21,6 @@ module.exports = {
             }],
             components: [row]
         });
-
 
     }
 };
