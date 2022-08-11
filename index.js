@@ -31,14 +31,6 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isButton()) {
         switch (interaction.customId) {
             case "sender":
-                let user = {
-                    user: interaction.user.id,
-                    request: interaction.message.id,
-                    count: count++
-                }
-                dataObj.data.push(user);
-                fs.writeFileSync('./data.json', JSON.stringify(dataObj));
-
                 const row = await new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
@@ -48,7 +40,37 @@ client.on("interactionCreate", async (interaction) => {
                             .setDisabled(true),
                     );
                 await interaction.update({ components: [row] });
-                await interaction.guild.channels.create({ name: 'RP-Session-'+count, reason: 'Session Requested' });
+                if (interaction.guild.channels.cache.find(channel => channel.name == "RP-Session-"+interaction.message.id) == undefined) {
+                    let user = {
+                        user: interaction.user.id,
+                        request: interaction.message.id,
+                        count: count++
+                    }
+                    dataObj.data.push(user);
+                    fs.writeFileSync('./data.json', JSON.stringify(dataObj));
+                    await interaction.guild.channels.create({ 
+                        name: 'RP-Session-'+user.request, 
+                        reason: 'Session Requested',
+                        permissionOverwrites: [
+                            {
+                                id: interaction.user.id, 
+                                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], 
+                                deny: [] 
+                            },
+                            {
+                                id: interaction.guild.roles.everyone, 
+                                allow: [], 
+                                deny: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'] 
+                            }
+                        ]
+                    });
+                } else {
+                    interaction.guild.channels.cache.find(channel => channel.name == "RP-Session-"+interaction.message.id).permissionOverwrites.edit(interaction.user.id, {
+                        'SEND_MESSAGES': true,
+                        'VIEW_CHANNEL': true,
+                        'READ_MESSAGE_HISTORY': true,
+                       })
+                }
                 break;
         }
     } else if (interaction.isChatInputCommand()) {
