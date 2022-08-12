@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField } = require("discord.js");
 const fs = require('node:fs');
 require("dotenv").config();
 
@@ -54,13 +54,13 @@ client.on("interactionCreate", async (interaction) => {
                         permissionOverwrites: [
                             {
                                 id: interaction.user.id, 
-                                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'], 
+                                allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages], 
                                 deny: [] 
                             },
                             {
                                 id: interaction.guild.roles.everyone, 
                                 allow: [], 
-                                deny: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'] 
+                                deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
                             }
                         ]
                     });
@@ -68,7 +68,6 @@ client.on("interactionCreate", async (interaction) => {
                     interaction.guild.channels.cache.find(channel => channel.name == "RP-Session-"+interaction.message.id).permissionOverwrites.edit(interaction.user.id, {
                         'SEND_MESSAGES': true,
                         'VIEW_CHANNEL': true,
-                        'READ_MESSAGE_HISTORY': true,
                        })
                 }
                 break;
