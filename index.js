@@ -31,6 +31,7 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isButton()) {
         switch (interaction.customId) {
             case "sender":
+                if (interaction.user.id == interaction.message.author.id) return;
                 const row = await new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
@@ -49,7 +50,7 @@ client.on("interactionCreate", async (interaction) => {
                     dataObj.data.push(user);
                     fs.writeFileSync('./data.json', JSON.stringify(dataObj));
                     await interaction.guild.channels.create({ 
-                        name: 'RP-Session-'+user.request, 
+                        name: 'RP-Session-'+user.count, 
                         reason: 'Session Requested',
                         permissionOverwrites: [
                             {
